@@ -1,0 +1,98 @@
+﻿<Page
+    x:Class="ESRI.PrototypeLab.ProximityMap.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ESRI.PrototypeLab.ProximityMap"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:esri="using:Esri.ArcGISRuntime.Controls"
+    xmlns:layer="using:Esri.ArcGISRuntime.Layers"
+    >
+    <Grid>
+        <esri:Map x:Name="Map" ManipulationMode="TranslateX, TranslateY, Scale">
+            <esri:Map.Layers>
+                <layer:ArcGISTiledMapServiceLayer ID="natgeo_" Visibility="Visible" ServiceUri="http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"/>
+                <layer:ArcGISTiledMapServiceLayer ID="topo___" Visibility="Collapsed" ServiceUri="http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer"/>
+                <layer:ArcGISTiledMapServiceLayer ID="imagery" Visibility="Collapsed" ServiceUri="http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"/>
+                <layer:ArcGISTiledMapServiceLayer ID="streets" Visibility="Collapsed" ServiceUri="http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"/>
+                <layer:GraphicsLayer ID="markers" />
+            </esri:Map.Layers>
+        </esri:Map>
+        <Canvas x:Name="InkCanvas"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,20,20,20">
+            <ToggleButton x:Name="ToggleButtonConnect" Style="{StaticResource ResourceKey=FlatToggleButton}">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="&#xE125;" FontFamily="Segoe UI Symbol" FontSize="25" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Connect" HorizontalAlignment="Center" FontFamily="Segoe UI" FontSize="14" FontWeight="SemiLight"/>
+                </StackPanel>
+            </ToggleButton>
+            <ToggleButton x:Name="ToggleButtonSketch" Style="{StaticResource ResourceKey=FlatToggleButton}" Margin="20,0,0,0">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="&#xE104;" FontFamily="Segoe UI Symbol" FontSize="25" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Sketch" HorizontalAlignment="Center" FontFamily="Segoe UI" FontSize="14" FontWeight="SemiLight"/>
+                </StackPanel>
+            </ToggleButton>
+            <Button x:Name="ButtonClearSketch" Style="{StaticResource ResourceKey=FlatButton}">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="&#xE106;" FontFamily="Segoe UI Symbol" FontSize="25" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Clear" HorizontalAlignment="Center" FontFamily="Segoe UI" FontSize="14" FontWeight="SemiLight" />
+                </StackPanel>
+            </Button>
+            <ToggleButton x:Name="ToggleButtonNatGeo" Style="{StaticResource ResourceKey=FlatToggleButton}" Margin="20,0,0,0" IsChecked="True">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="&#xE128;" FontFamily="Segoe UI Symbol" FontSize="25" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Nat Geo" HorizontalAlignment="Center" FontFamily="Segoe UI" FontSize="14" FontWeight="SemiLight"/>
+                </StackPanel>
+            </ToggleButton>
+            <ToggleButton x:Name="ToggleButtonTopo" Style="{StaticResource ResourceKey=FlatToggleButton}">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="&#x26F0;" FontFamily="Segoe UI Symbol" FontSize="25" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Topo" HorizontalAlignment="Center" FontFamily="Segoe UI" FontSize="14" FontWeight="SemiLight"/>
+                </StackPanel>
+            </ToggleButton>
+            <ToggleButton x:Name="ToggleButtonSatellite" Style="{StaticResource ResourceKey=FlatToggleButton}">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="&#xE1C3;" FontFamily="Segoe UI Symbol" FontSize="25" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Satellite" HorizontalAlignment="Center" FontFamily="Segoe UI" FontSize="14" FontWeight="SemiLight"/>
+                </StackPanel>
+            </ToggleButton>
+            <ToggleButton x:Name="ToggleButtonStreet" Style="{StaticResource ResourceKey=FlatToggleButton}">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="&#x26D9;" FontFamily="Segoe UI Symbol" FontSize="25" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Street" HorizontalAlignment="Center" FontFamily="Segoe UI" FontSize="14" FontWeight="SemiLight"/>
+                </StackPanel>
+            </ToggleButton>
+            <Button x:Name="ButtonScreenPosition" Style="{StaticResource ResourceKey=FlatButton}" Margin="20,0,0,0">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="&#xE125;" FontFamily="Segoe UI Symbol" FontSize="25" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Orientation" HorizontalAlignment="Center" FontFamily="Segoe UI" FontSize="14" FontWeight="SemiLight" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        <Popup x:Name="PopupNotifications" VerticalOffset="50">
+            <local:BannerControl />
+            <Popup.ChildTransitions>
+                <TransitionCollection>
+                    <EdgeUIThemeTransition Edge="Left"/>
+                </TransitionCollection>        
+            </Popup.ChildTransitions>
+        </Popup>
+        <Popup x:Name="PopupScreenPosition" IsOpen="False" IsLightDismissEnabled="True" HorizontalAlignment="Right" HorizontalOffset="-400">
+            <local:ScreenPositionControl x:Name="ScreenPositionControl" />
+            <Popup.ChildTransitions>
+                <TransitionCollection>
+                    <PaneThemeTransition Edge="Right"/>
+                </TransitionCollection>
+            </Popup.ChildTransitions>
+        </Popup>
+        <Popup x:Name="PopupSketch" IsOpen="False" IsLightDismissEnabled="False" HorizontalAlignment="Right" HorizontalOffset="-400">
+            <local:SketchControl x:Name="SketchControl" />
+            <Popup.ChildTransitions>
+                <TransitionCollection>
+                    <PaneThemeTransition Edge="Right"/>
+                </TransitionCollection>
+            </Popup.ChildTransitions>
+        </Popup>
+    </Grid>
+</Page>
